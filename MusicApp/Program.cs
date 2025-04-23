@@ -2,6 +2,7 @@ using AspNetCore.Identity.Extensions; // Кастомный неймспейс для приминения мигр
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MusicApp.Database;
+using MusicApp.Extensions;
 using MusicApp.Models;
 using System.Security.Claims;
 
@@ -41,14 +42,6 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations(); // Свое свойство для применения миграций
 }
 
-app.MapGet("users/me", async (ClaimsPrincipal claims, MusicAppDbContext dbcontext) =>
-{
-    string userId = claims.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-    return await dbcontext.Users.FindAsync(userId);
-})
-    .RequireAuthorization();
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -56,6 +49,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapIdentityApi<AppUser>(); // Добавляем контроллеры для работы с юзерами
+app.MapIdentityApi<AppUser>(); // Стандартные эндпоинты
+app.MapCustomIdentityApi(); // Кастомные эндпоинты
 
 app.Run();
