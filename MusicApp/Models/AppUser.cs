@@ -4,6 +4,6 @@ namespace MusicApp.Models
 {
     public class AppUser : IdentityUser
     {
-        public required string Nickname { get; set; }
+        public string? Nickname { get; set; } // Кастомное поле для юзера, должно быть nullable
     }
 }
